@@ -1,0 +1,88 @@
+spring:
+  aop:
+    proxy-target-class: true
+    auto: true
+  datasource:
+    druid:
+      db1:
+        url: jdbc:mysql://localhost:3306/starter?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: root
+      db2:
+        url: jdbc:mysql://localhost:3306/business?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: root
+  mvc:
+    #访问一个不存在的页面时是否抛出异常,此处抛出异常方便捕捉后返回前台
+    throw-exception-if-no-handler-found: false
+  resources:
+    add-mappings: false
+    static-locations: classpath:static/
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: root
+
+
+
+# redis配置
+redis:
+  # 集群
+  #  cluster:
+  #    nodes:
+  #      cluster:
+  #        max-redirects: 1
+  #        nodes: 192.168.*.*:6379
+  #        password:
+  # 单点
+  pool:
+    #    host: 10.10.*.*
+    #    host: 10.1.*.*
+    #    port: 6379
+    #    password: root
+    maxIdle: 1 #最大空闲数
+    maxWaitMillis: -1
+    maxActive: 1
+    minIdle: 0
+    maxTotal: 500
+    testOnBorrow: true
+    testOnReturn: false
+    blockWhenExhausted: false
+    numTestsPerEvictionRun: 3
+  # 限流大小
+  limit: 10
+
+# mybatis-plus配置信息
+mybatis-plus:
+  #  classpath: /com/xsjt/order/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapping/*Mapper.xml
+  typeHandlersPackage: com.nh.micro.ext.th
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.xsjt.order.entity
+  #  global-config:
+  #    id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+  #    db-column-underline: false
+  #    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+#    cache-enabled: true #配置的缓存的全局开关
+#    lazyLoadingEnabled: true #延时加载的开关
+#    multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
+
+# 日志
+logging:
+  config: classpath:logback-service.xml
+  path: /data/harrissService-log
+
+detail:
+  info:
+    name: harriss
+    age: 24
+    gender: male
+    address: Hunan, China
+    email: 2291544704@qq.com
+  url:
+    login: http://****.com/service/login
