@@ -8,18 +8,20 @@ spring:
         url: jdbc:mysql://localhost:3306/starter?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
-        password: root
+        #password: root
+        password: chenhoubo1234.
       db2:
         url: jdbc:mysql://localhost:3306/business?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
-        password: root
+        #password: root
+        password: chenhoubo1234.
   mvc:
     #访问一个不存在的页面时是否抛出异常,此处抛出异常方便捕捉后返回前台
     throw-exception-if-no-handler-found: false
-  resources:
-    add-mappings: false
-    static-locations: classpath:static/
+#  resources:
+#    add-mappings: false
+#    static-locations: classpath:static/
   redis:
     host: 127.0.0.1
     port: 6379
@@ -57,7 +59,7 @@ redis:
 # mybatis-plus配置信息
 mybatis-plus:
 #  classpath: /com/xsjt/order/mapper/*Mapper.xml
-  mapper-locations: classpath:/mapping/*Mapper.xml
+  mapper-locations: classpath:/mapping/*/*Mapper.xml
   typeHandlersPackage: com.nh.micro.ext.th
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.xsjt.order.entity
