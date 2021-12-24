@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +41,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserInfoProperties userInfoProperties;
 
     private RedisUtil redisUtil;
-
 
     @Override
     @DataSource(DataSourceEnum.DB1)
@@ -100,8 +100,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public RetResult<User> selectUserByUsername(String username) throws ServiceException {
         try {
-            User user = baseMapper.selectByUserName(username);
-            return new RetResult<User>().setCode(RetCode.SUCCESS).setData(user);
+            List<User> userList = baseMapper.selectByUserName(username);
+            return new RetResult<User>().setCode(RetCode.SUCCESS).setData(userList.get(0));
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
@@ -123,7 +123,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public RetResult login(Map<String,String> map) throws ServiceException {
         try {
-            User user = baseMapper.selectByUserName(map.get("username"));
+            String username = map.get("username");
+            List<User> userList = baseMapper.selectByUserName(username);
+            User user = userList.get(0);
             JSONObject object = new JSONObject(user.getJson());
             String password = object.getStr("password");
             if(Func.isEmpty(user)){

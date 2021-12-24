@@ -15,7 +15,7 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
-    <select id="selectByUserName" resultMap="BaseResultMap">
+    <select id="selectByUserName" parameterType="String" resultMap="BaseResultMap">
         SELECT * FROM user
         WHERE json->>'$.username' = #{param1}
     </select>

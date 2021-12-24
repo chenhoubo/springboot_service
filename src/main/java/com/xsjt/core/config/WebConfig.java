@@ -92,20 +92,15 @@ public class WebConfig extends WebMvcConfigurationSupport {
         super.addResourceHandlers(registry);
     }
 
-//    @Override
-//    protected void addInterceptors(InterceptorRegistry registry) {
-//        List<String> excludePath = new ArrayList<>();
-//        excludePath.add("/applet/login");
-//        excludePath.add("/applet/bindUser");
-//        excludePath.add("/applet/send");
-//        excludePath.add("/applet/changeType");
-//        excludePath.add("/applet/getType");
-//        excludePath.add("/qiwei/**");
-//
-//        registry.addInterceptor(authenticationInterceptor)
-//                .addPathPatterns("/**")// 拦截的请求路径
-//                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/configuration/**")//swagger放行
-//                .excludePathPatterns(excludePath);//排除的请求路径
-//    }
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        List<String> excludePath = new ArrayList<>();
+        excludePath.add("/user/login");
+        excludePath.add("/user/page");
+        registry.addInterceptor(authenticationInterceptor)
+                .addPathPatterns("/**")// 拦截的请求路径
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/configuration/**")//swagger放行
+                .excludePathPatterns(excludePath);//排除的请求路径
+    }
 
 }
