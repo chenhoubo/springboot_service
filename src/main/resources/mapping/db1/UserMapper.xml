@@ -17,6 +17,6 @@
 
     <select id="selectByUserName" resultMap="BaseResultMap">
         SELECT * FROM user
-        WHERE and json->>'$.username' = #{param1}
+        WHERE json->>'$.username' = #{param1}
     </select>
 </mapper>
