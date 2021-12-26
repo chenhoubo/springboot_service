@@ -4,12 +4,12 @@ spring:
     auto: true
   datasource:
     druid:
-      db1:
+      one:
         url: jdbc:mysql://localhost:3306/starter?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
         password: root
-      db2:
+      two:
         url: jdbc:mysql://localhost:3306/business?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root

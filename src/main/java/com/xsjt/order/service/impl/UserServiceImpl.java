@@ -16,7 +16,7 @@ import com.xsjt.core.util.Func;
 import com.xsjt.core.util.RedisUtil;
 import com.xsjt.core.util.TokenUtil;
 import com.xsjt.order.entity.User;
-import com.xsjt.order.mapper.db1.UserMapper;
+import com.xsjt.order.mapper.one.UserMapper;
 import com.xsjt.order.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

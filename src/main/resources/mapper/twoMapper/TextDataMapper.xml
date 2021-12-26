@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xsjt.order.mapper.db1.UserMapper">
+<mapper namespace="com.xsjt.order.mapper.two.TextDataMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xsjt.order.entity.User">
+    <resultMap id="BaseResultMap" type="com.xsjt.order.entity.TextData">
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="json" property="json" />
@@ -15,8 +15,4 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
-    <select id="selectByUserName" parameterType="String" resultMap="BaseResultMap">
-        SELECT * FROM user
-        WHERE json->>'$.username' = #{param1}
-    </select>
 </mapper>

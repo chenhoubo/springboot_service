@@ -4,13 +4,13 @@ spring:
     auto: true
   datasource:
     druid:
-      db1:
+      one:
         url: jdbc:mysql://localhost:3306/starter?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
         #password: root
         password: chenhoubo1234.
-      db2:
+      two:
         url: jdbc:mysql://localhost:3306/business?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
@@ -31,19 +31,7 @@ spring:
 
 # redis配置
 redis:
-  # 集群
-#  cluster:
-#    nodes:
-#      cluster:
-#        max-redirects: 1
-#        nodes: 192.168.*.*:6379
-#        password:
-  # 单点
   pool:
-#    host: 10.10.*.*
-#    host: 10.1.*.*
-#    port: 6379
-#    password: root
     maxIdle: 1 #最大空闲数
     maxWaitMillis: -1
     maxActive: 1
@@ -56,10 +44,14 @@ redis:
   # 限流大小
   limit: 10
 
+#mybatis:
+#  type-aliases-package: com.xsjt.order.entity          # 所有实体类所在包路径
+#  mapper-locations: classpath:/mapping/oneMapper/*.xml,classpath:/mapping/twoMapper/*.xml      # mapper映射文件
+
 # mybatis-plus配置信息
 mybatis-plus:
 #  classpath: /com/xsjt/order/mapper/*Mapper.xml
-  mapper-locations: classpath:/mapping/*/*Mapper.xml
+  mapper-locations: classpath*:/mapper/oneMapper/*Mapper.xml,classpath*:/mapper/twoMapper/*Mapper.xml
   typeHandlersPackage: com.nh.micro.ext.th
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.xsjt.order.entity
@@ -70,15 +62,13 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     call-setters-on-nulls: true
-#    cache-enabled: true #配置的缓存的全局开关
-#    lazyLoadingEnabled: true #延时加载的开关
-#    multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
 
 # 日志
 logging:
   config: classpath:logback-service.xml
   path: /data/harrissService-log
 
+#开发信息
 detail:
   info:
     name: harriss
