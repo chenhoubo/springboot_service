@@ -326,22 +326,22 @@ public class JsonUtil {
                 if (hashMap.containsKey(ff.getName())) {
                     hashMap.remove(ff.getName());
                 }
-                if (finalFields.containsKey(ff.getName())) {
-                    String key = ff.getName();
-                    Object value = map.get(finalFields.get(key));
-                    if (value == null && map.get(key) == null) {
-                        break;
-                    } else if (value == null) {
-                        value = map.get(key);
-                    }
-                    String s = JsonUtil.toJson(value);
-                    if (value instanceof String) {
-                        s = (String) value;
-                    }
-                    map.put(key, s);
-                    map.remove(finalFields.get(key));
-                    hashMap.remove(finalFields.get(key));
-                }
+//                if (finalFields.containsKey(ff.getName())) {
+//                    String key = ff.getName();
+//                    Object value = map.get(finalFields.get(key));
+//                    if (value == null && map.get(key) == null) {
+//                        break;
+//                    } else if (value == null) {
+//                        value = map.get(key);
+//                    }
+//                    String s = JsonUtil.toJson(value);
+//                    if (value instanceof String) {
+//                        s = (String) value;
+//                    }
+//                    map.put(key, s);
+//                    map.remove(finalFields.get(key));
+//                    hashMap.remove(finalFields.get(key));
+//                }
             }
             map.put("json", toJson(hashMap));
             String content = JsonUtil.toJson(map);

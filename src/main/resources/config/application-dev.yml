@@ -8,14 +8,14 @@ spring:
         url: jdbc:mysql://localhost:3306/starter?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
-        #password: root
-        password: chenhoubo1234.
+        password: root
+#        password: chenhoubo1234.
       two:
         url: jdbc:mysql://localhost:3306/business?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
-        #password: root
-        password: chenhoubo1234.
+        password: root
+#        password: chenhoubo1234.
   mvc:
     #访问一个不存在的页面时是否抛出异常,此处抛出异常方便捕捉后返回前台
     throw-exception-if-no-handler-found: false
@@ -43,25 +43,6 @@ redis:
     numTestsPerEvictionRun: 3
   # 限流大小
   limit: 10
-
-#mybatis:
-#  type-aliases-package: com.xsjt.order.entity          # 所有实体类所在包路径
-#  mapper-locations: classpath:/mapping/oneMapper/*.xml,classpath:/mapping/twoMapper/*.xml      # mapper映射文件
-
-# mybatis-plus配置信息
-mybatis-plus:
-#  classpath: /com/xsjt/order/mapper/*Mapper.xml
-  mapper-locations: classpath*:/mapper/oneMapper/*Mapper.xml,classpath*:/mapper/twoMapper/*Mapper.xml
-  typeHandlersPackage: com.nh.micro.ext.th
-  #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.xsjt.order.entity
-#  global-config:
-#    id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
-#    db-column-underline: false
-#    refresh-mapper: true
-  configuration:
-    map-underscore-to-camel-case: true
-    call-setters-on-nulls: true
 
 # 日志
 logging:

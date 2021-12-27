@@ -1,5 +1,6 @@
 package com.xsjt.order.service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.xsjt.core.exception.ServiceException;
 import com.xsjt.core.page.Query;
@@ -19,19 +20,19 @@ import java.util.Map;
 public interface IUserService extends IService<User> {
 
 //    基本增删改查接口
-    RetResult saveUser(User user) throws ServiceException;
+    RetResult<String> saveUser(User user) throws ServiceException;
 
-    RetResult updateUser(User user) throws ServiceException;
+    RetResult<String> updateUser(User user) throws ServiceException;
 
-    RetResult deleteUser(Long id) throws ServiceException;
+    RetResult<String> deleteUser(Long id) throws ServiceException;
 
-    RetResult selectUser(Long id) throws ServiceException;
+    RetResult<Map> selectUser(Long id) throws ServiceException;
 
     RetResult<User> selectUserByUsername(String username) throws ServiceException;
 
-    RetResult pageUser(Query query) throws ServiceException;
+    RetResult<Page> pageUser(Query query) throws ServiceException;
 
 //    业务接口
-    RetResult login(Map<String,String> user) throws ServiceException;
+    RetResult<String> login(Map<String,String> user) throws ServiceException;
 
 }

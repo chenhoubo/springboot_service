@@ -63,10 +63,10 @@ public class UserController {
         return result;
     }
 
-    @GetMapping("/getUser")
+    @GetMapping("/getOne")
     @ResponseBody
     @ApiOperation(value = "获取用户", notes="获取用户")
-    public RetResult getUser(Long id) {
+    public RetResult getOne(Long id) {
         log.info("getUser  start......:{}",id);
         RetResult result = userService.selectUser(id);
         log.info("getUser end......response:{}",result);

@@ -15,6 +15,7 @@ import com.xsjt.core.ret.RetResult;
 import com.xsjt.core.util.Func;
 import com.xsjt.core.util.RedisUtil;
 import com.xsjt.core.util.TokenUtil;
+import com.xsjt.core.util.tool.DateUtil;
 import com.xsjt.order.entity.User;
 import com.xsjt.order.mapper.one.UserMapper;
 import com.xsjt.order.service.IUserService;
@@ -44,8 +45,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @DataSource(DataSourceEnum.DB1)
-    public RetResult saveUser(User user) throws ServiceException {
+    public RetResult<String> saveUser(User user) throws ServiceException {
         try {
+            user.setCreateTime(DateUtil.getTime());
+            user.setUpdateTime(DateUtil.getTime());
             if (baseMapper.insert(user) > 0) {
                 return new RetResult<String>().setCode(RetCode.SUCCESS);
             } else {
@@ -57,8 +60,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public RetResult updateUser(User user) throws ServiceException {
+    public RetResult<String> updateUser(User user) throws ServiceException {
         try {
+            user.setUpdateTime(DateUtil.getTime());
             if (baseMapper.updateById(user) > 0) {
                 return new RetResult<String>().setCode(RetCode.SUCCESS);
             } else {
@@ -70,7 +74,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public RetResult deleteUser(Long id) throws ServiceException {
+    public RetResult<String> deleteUser(Long id) throws ServiceException {
         try {
             if (baseMapper.deleteById(id) > 0) {
                 return new RetResult<String>().setCode(RetCode.SUCCESS);
@@ -83,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public RetResult selectUser(Long id) throws ServiceException {
+    public RetResult<Map> selectUser(Long id) throws ServiceException {
         try {
             User user = baseMapper.selectById(id);
             if (Func.isNotEmpty(user)) {
@@ -108,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public RetResult pageUser(Query query) throws ServiceException {
+    public RetResult<Page> pageUser(Query query) throws ServiceException {
         try {
             Page<User> page = new PageFactory<User>().defaultPage(query.getCurrent(), query.getSize(), null, null);
             Page selectPage = selectPage(page);
@@ -121,7 +125,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public RetResult login(Map<String,String> map) throws ServiceException {
+    public RetResult<String> login(Map<String,String> map) throws ServiceException {
         try {
             String username = map.get("username");
             List<User> userList = baseMapper.selectByUserName(username);

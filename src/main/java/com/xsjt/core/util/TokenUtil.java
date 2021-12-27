@@ -14,7 +14,7 @@ public class TokenUtil {
     public static String getToken(User user) {
         long currentTime = System.currentTimeMillis();
         log.info("=====getToken===now    is " + new Date(currentTime));
-        log.info("=====getToken===expire is " + new Date(currentTime + 30 * 1000 * 60));
+        log.info("=====getToken===expire is " + new Date(currentTime + 60 * 1000 * 60));
         String token="";
         JSONObject object = new JSONObject(user.getJson());
         String username = object.getStr("username");

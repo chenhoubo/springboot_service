@@ -96,7 +96,6 @@ public class WebConfig extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         List<String> excludePath = new ArrayList<>();
         excludePath.add("/user/login");
-        excludePath.add("/user/page");
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/**")// 拦截的请求路径
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/configuration/**")//swagger放行
