@@ -38,7 +38,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         try {
             menu.setCreateTime(DateUtil.getTime());
             menu.setUpdateTime(DateUtil.getTime());
-            if (baseMapper.insert(menu) > 0) {
+            Integer insert = baseMapper.insert(menu);
+            if (insert > 0) {
                 return new RetResult<String>().setCode(RetCode.SUCCESS);
             } else {
                 return new RetResult<String>().setCode(RetCode.FAIL);

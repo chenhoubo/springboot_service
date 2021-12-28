@@ -67,7 +67,7 @@ CREATE TABLE `info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10018 DEFAULT CHARSET=utf8 COMMENT='项目详情表';
 
---管理员数据
+--用户表数据
 INSERT INTO user
 (name, status, is_deleted, json, create_by, update_by, create_time, update_time, end_time)
 VALUES('莫语', 0, 0, '{
@@ -81,6 +81,9 @@ VALUES('莫语', 0, 0, '{
   "username": "admin",
   "password": "123456"
 }', 'default', 'default', 1639990424276, 1639990424276, 0);
+INSERT INTO user
+(name, status, is_deleted, json, create_by, update_by, create_time, update_time, end_time)
+VALUES('访客', 0, 0, '{"role": 1475387934500335617, "menus": [], "password": "123456", "username": "user"}', 'default', 'default', 1639990424276, 1639990424276, 0);
 
 --留言表
 CREATE TABLE `speak` (

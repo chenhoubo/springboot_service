@@ -8,14 +8,14 @@ spring:
         url: jdbc:mysql://localhost:3306/starter?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
-        password: root
-#        password: chenhoubo1234.
+#        password: root
+        password: chenhoubo1234.
       two:
         url: jdbc:mysql://localhost:3306/business?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
         username: root
-        password: root
-#        password: chenhoubo1234.
+#        password: root
+        password: chenhoubo1234.
   mvc:
     #访问一个不存在的页面时是否抛出异常,此处抛出异常方便捕捉后返回前台
     throw-exception-if-no-handler-found: false

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@TableName("dictionaries")
+@TableName("menu")
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("菜单表")
 public class Menu extends BaseEntity {

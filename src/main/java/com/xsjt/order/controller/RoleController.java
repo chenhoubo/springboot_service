@@ -65,12 +65,20 @@ public class RoleController {
     }
 
     @GetMapping("/delete")
-    @ResponseBody
     @ApiOperation(value = "删除", notes="删除")
     public RetResult<String> delete(Long id) {
         log.info("delete  start......:{}",id);
         RetResult<String> result = roleService.delete(id);
         log.info("delete end......response:{}",result);
+        return result;
+    }
+
+    @GetMapping("/getRoles")
+    @ApiOperation(value = "获取权限设置信息", notes="获取权限设置信息")
+    public RetResult<Map> getRoles() {
+        log.info("getRoles  start......");
+        RetResult<Map> result = roleService.getRoles();
+        log.info("getRoles end......response:{}",result);
         return result;
     }
 }

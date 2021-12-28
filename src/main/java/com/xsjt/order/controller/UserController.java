@@ -2,6 +2,7 @@ package com.xsjt.order.controller;
 
 import com.xsjt.core.jackson.JsonUtil;
 import com.xsjt.core.page.Query;
+import com.xsjt.core.ret.RetCode;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.User;
 import com.xsjt.order.service.IUserService;
@@ -64,7 +65,6 @@ public class UserController {
     }
 
     @GetMapping("/getOne")
-    @ResponseBody
     @ApiOperation(value = "获取用户", notes="获取用户")
     public RetResult getOne(Long id) {
         log.info("getUser  start......:{}",id);
@@ -74,12 +74,22 @@ public class UserController {
     }
 
     @GetMapping("/delete")
-    @ResponseBody
     @ApiOperation(value = "删除用户", notes="删除用户")
     public RetResult delete(Long id) {
         log.info("delete  start......:{}",id);
         RetResult result = userService.deleteUser(id);
         log.info("delete end......response:{}",result);
+        return result;
+    }
+
+    @GetMapping("/getInfo")
+    @ApiOperation(value = "获取当前登录信息", notes="获取当前登录信息")
+    public RetResult getInfo(User user) {
+        log.info("getUser  start......:{}",user);
+        Map map = JsonUtil.entityToMap(user);
+        map.remove("password");
+        RetResult result = new RetResult<Map>().setCode(RetCode.SUCCESS).setData(map);
+        log.info("getUser end......response:{}",result);
         return result;
     }
 }
