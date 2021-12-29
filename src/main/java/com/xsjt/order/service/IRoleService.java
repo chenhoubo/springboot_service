@@ -7,6 +7,7 @@ import com.xsjt.core.page.Query;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.Role;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +29,6 @@ public interface IRoleService extends IService<Role> {
     RetResult<Page> page(Query query) throws ServiceException;
 
 //业务接口
-    RetResult<Map> getRoles() throws ServiceException;
+    RetResult<List> getRoles() throws ServiceException;
 
 }

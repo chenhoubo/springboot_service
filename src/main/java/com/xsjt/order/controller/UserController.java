@@ -85,11 +85,11 @@ public class UserController {
     @GetMapping("/getInfo")
     @ApiOperation(value = "获取当前登录信息", notes="获取当前登录信息")
     public RetResult getInfo(User user) {
-        log.info("getUser  start......:{}",user);
+        log.info("getInfo  start......:{}",user);
         Map map = JsonUtil.entityToMap(user);
         map.remove("password");
         RetResult result = new RetResult<Map>().setCode(RetCode.SUCCESS).setData(map);
-        log.info("getUser end......response:{}",result);
+        log.info("getInfo end......response:{}",result);
         return result;
     }
 }

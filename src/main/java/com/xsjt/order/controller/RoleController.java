@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(value = "角色", description = "角色")
@@ -75,9 +76,9 @@ public class RoleController {
 
     @GetMapping("/getRoles")
     @ApiOperation(value = "获取权限设置信息", notes="获取权限设置信息")
-    public RetResult<Map> getRoles() {
+    public RetResult<List> getRoles() {
         log.info("getRoles  start......");
-        RetResult<Map> result = roleService.getRoles();
+        RetResult<List> result = roleService.getRoles();
         log.info("getRoles end......response:{}",result);
         return result;
     }

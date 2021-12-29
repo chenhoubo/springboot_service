@@ -31,10 +31,10 @@ public enum RetCode {
 	UNAUTHORIZED(401 ,"未认证"),
 	
 	 /** 未登录 */
-    UNAUTHEN(4401, "未登录"),
+    UNAUTHEN(401, "未登录"),
 
     /** 未授权，拒绝访问 */
-    UNAUTHZ(4403 ,"用户不存在，拒绝访问"),
+    UNAUTHZ(403 ,"用户不存在，拒绝访问"),
 
 	// 接口不存在
 	NOT_FOUND(404 ,"未找到"),

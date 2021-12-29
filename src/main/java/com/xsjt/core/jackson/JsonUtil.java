@@ -412,6 +412,28 @@ public class JsonUtil {
         }
         return null;
     }
+    public static List<Map> entitysToMaps(List records) {
+        try {
+            String s = toJson(records);
+            List<Map> maps = (List<Map>) JSONArray.parse(s);
+            ArrayList<Map> list = new ArrayList<>();
+            for (int i = 0; i < maps.size(); i++) {
+                Map map = maps.get(i);
+                Map j = (Map<String, Object>) JSONObject.parse((String) map.get("json"));
+                Iterator<Map.Entry<Integer, String>> it = j.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<Integer, String> entry = it.next();
+                    map.put(entry.getKey(), entry.getValue());
+                }
+                map.remove("json");
+                list.add(map);
+            }
+            return list;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
 
     public static ObjectMapper getInstance() {
         return JacksonHolder.INSTANCE;

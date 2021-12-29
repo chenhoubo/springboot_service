@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -108,30 +109,33 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     }
 
     @Override
-    public RetResult<Map> getRoles() throws ServiceException {
+    public RetResult<List> getRoles() throws ServiceException {
         try {
-            HashMap<Object, Object> result = new HashMap<>();
-            ArrayList<Map> list = new ArrayList<>();
-            HashMap<Object, Object> map1 = new HashMap<>();
-            map1.put("description","I am Admin");
-            map1.put("key","admin");
-            String [] pages1=new String[]{"Home","Dashbord","Driver","Driver-index","Permission","PageUser","PageAdmin","Roles","Table","BaseTable","ComplexTable","Icons","Icons-index","Components","Sldie-yz","Upload","Carousel","Echarts","Sldie-chart","Dynamic-chart","Map-chart","Excel","Excel-out","Excel-in","Mutiheader-out","Error","Page404","Github","NavTest","Nav1","Nav2","Nav2-1","Nav2-2","Nav2-2-1","Nav2-2-2"};
-            map1.put("pages",pages1);
-            list.add(map1);
-            HashMap<Object, Object> map2 = new HashMap<>(map1);
-            map2.put("description","I am User");
-            map2.put("key","user");
-            String [] pages2=new String[]{"Home","Dashbord","Driver","Driver-index","PageUser","Table","BaseTable","ComplexTable","Icons","Icons-index","Components","Sldie-yz","Upload","Carousel","Echarts","Sldie-chart","Dynamic-chart","Map-chart","Excel","Excel-out","Excel-in","Mutiheader-out","Error","Page404","Github","NavTest","Nav1","Nav2","Nav2-1","Nav2-2","Nav2-2-1","Nav2-2-2"};
-            map2.put("pages",pages2);
-            list.add(map2);
-            HashMap<Object, Object> map3 = new HashMap<>(map1);
-            map3.put("description","I am Example");
-            map3.put("key","example");
-            String [] pages3=new String[]{"Home","Dashbord","Driver","Driver-index","PageUser","BaseTable","Sldie-yz","Echarts","Sldie-chart","Dynamic-chart","Map-chart","Mutiheader-out","Error","Page404","Github"};
-            map3.put("pages",pages3);
-            list.add(map3);
-            result.put("allRoles",list);
-            return new RetResult<Map>().setCode(RetCode.SUCCESS).setData(result);
+            Wrapper<Role> wrapper = new EntityWrapper<Role>().eq("is_deleted", 0);
+            List<Role> roles = baseMapper.selectList(wrapper);
+            List<Map> maps = JsonUtil.entitysToMaps(roles);
+//            HashMap<Object, Object> result = new HashMap<>();
+//            ArrayList<Map> list = new ArrayList<>();
+//            HashMap<Object, Object> map1 = new HashMap<>();
+//            map1.put("description","I am Admin");
+//            map1.put("key","admin");
+//            String [] pages1=new String[]{"Home","Dashbord","Driver","Driver-index","Permission","PageUser","PageAdmin","Roles","Table","BaseTable","ComplexTable","Icons","Icons-index","Components","Sldie-yz","Upload","Carousel","Echarts","Sldie-chart","Dynamic-chart","Map-chart","Excel","Excel-out","Excel-in","Mutiheader-out","Error","Page404","Github","NavTest","Nav1","Nav2","Nav2-1","Nav2-2","Nav2-2-1","Nav2-2-2"};
+//            map1.put("pages",pages1);
+//            list.add(map1);
+//            HashMap<Object, Object> map2 = new HashMap<>(map1);
+//            map2.put("description","I am User");
+//            map2.put("key","user");
+//            String [] pages2=new String[]{"Home","Dashbord","Driver","Driver-index","PageUser","Table","BaseTable","ComplexTable","Icons","Icons-index","Components","Sldie-yz","Upload","Carousel","Echarts","Sldie-chart","Dynamic-chart","Map-chart","Excel","Excel-out","Excel-in","Mutiheader-out","Error","Page404","Github","NavTest","Nav1","Nav2","Nav2-1","Nav2-2","Nav2-2-1","Nav2-2-2"};
+//            map2.put("pages",pages2);
+//            list.add(map2);
+//            HashMap<Object, Object> map3 = new HashMap<>(map1);
+//            map3.put("description","I am Example");
+//            map3.put("key","example");
+//            String [] pages3=new String[]{"Home","Dashbord","Driver","Driver-index","PageUser","BaseTable","Sldie-yz","Echarts","Sldie-chart","Dynamic-chart","Map-chart","Mutiheader-out","Error","Page404","Github"};
+//            map3.put("pages",pages3);
+//            list.add(map3);
+//            result.put("allRoles",maps);
+            return new RetResult<List>().setCode(RetCode.SUCCESS).setData(maps);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
