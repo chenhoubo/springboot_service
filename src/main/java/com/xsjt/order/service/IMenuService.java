@@ -7,6 +7,7 @@ import com.xsjt.core.page.Query;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.Menu;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,5 +27,7 @@ public interface IMenuService extends IService<Menu> {
     RetResult<Map> select(Long id) throws ServiceException;
 
     RetResult<Page> page(Query query) throws ServiceException;
+
+    RetResult<List> getAll() throws ServiceException;
 
 }

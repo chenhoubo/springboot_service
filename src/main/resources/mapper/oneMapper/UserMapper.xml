@@ -19,4 +19,8 @@
         SELECT * FROM user
         WHERE json->>'$.username' = #{param1}
     </select>
+
+    <select id="selectTotalVisits" resultType="java.lang.Long">
+        SELECT sum(json->>'$.count') FROM user
+    </select>
 </mapper>

@@ -18,4 +18,7 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     List<User> selectByUserName(String username);
+
+    Long selectTotalVisits();
+
 }

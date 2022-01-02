@@ -19,6 +19,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -102,6 +104,24 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             RetResult<Page> msg = new RetResult<Page>().setCode(RetCode.SUCCESS).setData(mapPage);
             return msg;
         } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public RetResult<List> getAll() throws ServiceException {
+        try{
+            Wrapper<Menu> wrapper = new EntityWrapper<Menu>().eq("is_deleted", 0);
+            List<Menu> menuList = selectList(wrapper);
+            List<Map> maps = JsonUtil.entitysToMaps(menuList);
+            for (int i = 0; i < maps.size(); i++) {
+                Map menu = maps.get(i);
+                menu.put("updateTime",DateUtil.formatDateTime(new Date((Long)menu.get("updateTime"))));
+                menu.put("pid",menu.get("pid")+"");
+            }
+            RetResult<List> msg = new RetResult<List>().setCode(RetCode.SUCCESS).setData(maps);
+            return msg;
+        }catch (Exception e){
             throw new ServiceException(e.getMessage());
         }
     }

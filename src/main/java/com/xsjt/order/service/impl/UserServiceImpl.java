@@ -16,8 +16,10 @@ import com.xsjt.core.util.Func;
 import com.xsjt.core.util.RedisUtil;
 import com.xsjt.core.util.TokenUtil;
 import com.xsjt.core.util.tool.DateUtil;
+import com.xsjt.order.entity.Role;
 import com.xsjt.order.entity.User;
 import com.xsjt.order.mapper.one.UserMapper;
+import com.xsjt.order.service.IRoleService;
 import com.xsjt.order.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +41,9 @@ import java.util.Map;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
-    private UserInfoProperties userInfoProperties;
+    IRoleService roleService;
 
+    private UserInfoProperties userInfoProperties;
     private RedisUtil redisUtil;
 
     @Override
@@ -136,10 +139,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 return new RetResult<String>().setCode(RetCode.UNAUTHZ);
             }else if(map.get("password").equals(password)){
                 String token = TokenUtil.getToken(user);
+//                访问次数加1
+                Long count = object.getLong("count") + 1;
+                object.remove("count");
+                object.putOnce("count",count);
+                user.setJson(JsonUtil.toJson(object));
+                baseMapper.updateById(user);
                 return new RetResult<String>().setCode(RetCode.SUCCESS).setData(token);
             }else{
                 return new RetResult<String>().setCode(RetCode.UNAUTHEN).setMsg("密码错误");
             }
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public RetResult<Map> getInfo(User user) throws ServiceException {
+        try {
+            Map map = JsonUtil.entityToMap(user);
+            map.remove("password");
+            Long roleId = (Long)map.get("role");
+            Role role = roleService.selectById(roleId);
+            Map r = JsonUtil.entityToMap(role);
+            map.put("menus",r.get("menus"));
+            RetResult result = new RetResult<Map>().setCode(RetCode.SUCCESS).setData(map);
+            return result;
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }

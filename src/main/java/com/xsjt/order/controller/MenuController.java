@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(value = "菜单", description = "菜单")
@@ -58,9 +59,19 @@ public class MenuController {
     @ResponseBody
     @ApiOperation(value = "获取", notes="获取")
     public RetResult<Map> getOne(Long id) {
-        log.info("getUser  start......:{}",id);
+        log.info("getOne  start......:{}",id);
         RetResult<Map> result = menuService.select(id);
-        log.info("getUser end......response:{}",result);
+        log.info("getOne end......response:{}",result);
+        return result;
+    }
+
+    @PostMapping("/getAll")
+    @ResponseBody
+    @ApiOperation(value = "获取所有", notes="获取所有")
+    public RetResult<List> getAll() {
+        log.info("getAll  start......");
+        RetResult<List> result = menuService.getAll();
+        log.info("getAll end......response:{}",result);
         return result;
     }
 

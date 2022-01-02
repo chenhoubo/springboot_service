@@ -4,7 +4,9 @@ import com.xsjt.core.exception.ServiceException;
 import com.xsjt.core.ret.RetCode;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.core.util.tool.DateUtil;
+import com.xsjt.order.mapper.one.UserMapper;
 import com.xsjt.order.service.IHomeService;
+import com.xsjt.order.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,14 @@ import java.util.Map;
 @Service
 public class HomeServiceImpl implements IHomeService {
 
+    UserMapper userMapper;
+
     @Override
     public RetResult<Map> getCardsData() throws ServiceException {
         try {
             HashMap<Object, Object> hashMap = new HashMap<>();
-            hashMap.put("vistors",79757);
+            Long vistors = userMapper.selectTotalVisits();
+            hashMap.put("vistors",vistors);
             hashMap.put("message",767);
             hashMap.put("order",79757);
             hashMap.put("profit",51904);

@@ -34,5 +34,7 @@ public interface IUserService extends IService<User> {
 
 //    业务接口
     RetResult<String> login(Map<String,String> user) throws ServiceException;
+    RetResult<Map> getInfo(User user) throws ServiceException;
+
 
 }
