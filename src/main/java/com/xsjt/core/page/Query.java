@@ -61,4 +61,7 @@ public class Query{
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
+	@ApiModelProperty(hidden = true)
+	private Integer status;
+
 }

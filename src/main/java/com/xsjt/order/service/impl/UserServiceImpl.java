@@ -1,6 +1,8 @@
 package com.xsjt.order.service.impl;
 
 import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.xsjt.core.config.UserInfoProperties;
@@ -79,7 +81,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public RetResult<String> deleteUser(Long id) throws ServiceException {
         try {
-            if (baseMapper.deleteById(id) > 0) {
+            Wrapper<User> wrapper = new EntityWrapper<User>().eq("id", id);
+            if (baseMapper.updateForSet("is_deleted=1",wrapper) > 0) {
                 return new RetResult<String>().setCode(RetCode.SUCCESS);
             } else {
                 return new RetResult<String>().setCode(RetCode.FAIL);
@@ -94,8 +97,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         try {
             User user = baseMapper.selectById(id);
             if (Func.isNotEmpty(user)) {
-                Map map = JsonUtil.entityToMap(user);
-                return new RetResult<Map>().setCode(RetCode.SUCCESS).setData(map);
+                if(user.getIsDeleted() == 1){
+                    return new RetResult<Map>().setCode(RetCode.UNAUTHZ).setMsg("用户已被删除");
+                }else{
+                    Map map = JsonUtil.entityToMap(user);
+                    return new RetResult<Map>().setCode(RetCode.SUCCESS).setData(map);
+                }
             } else {
                 return new RetResult<Map>().setCode(RetCode.FAIL).setData(null);
             }
@@ -118,7 +125,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public RetResult<Page> pageUser(Query query) throws ServiceException {
         try {
             Page<User> page = new PageFactory<User>().defaultPage(query.getCurrent(), query.getSize(), null, null);
-            Page selectPage = selectPage(page);
+            Wrapper<User> wrapper = new EntityWrapper<User>()
+                    .eq("is_deleted", 0);
+            if(Func.isNotEmpty(query.getStatus())){
+                wrapper.eq("status",Func.toInt(query.getStatus(), 0));
+            }
+            if(Func.isNotEmpty(query.getId())){
+                wrapper.eq("id",query.getId());
+            }
+            Page selectPage = selectPage(page,wrapper);
             Page<Map> mapPage = JsonUtil.entitysToMaps(selectPage);
             RetResult msg = new RetResult<Page>().setCode(RetCode.SUCCESS).setData(mapPage);
             return msg;
@@ -137,6 +152,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             String password = object.getStr("password");
             if(Func.isEmpty(user)){
                 return new RetResult<String>().setCode(RetCode.UNAUTHZ);
+            }else if(user.getIsDeleted() == 1 || user.getStatus() == 1 ){
+                return new RetResult<String>().setCode(RetCode.UNAUTHZ).setMsg("用户已被删除/禁用");
             }else if(map.get("password").equals(password)){
                 String token = TokenUtil.getToken(user);
 //                访问次数加1
@@ -159,10 +176,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         try {
             Map map = JsonUtil.entityToMap(user);
             map.remove("password");
-            Long roleId = (Long)map.get("role");
+            Long roleId = Long.parseLong((String)map.get("role"));
             Role role = roleService.selectById(roleId);
             Map r = JsonUtil.entityToMap(role);
             map.put("menus",r.get("menus"));
+            map.put("rolename",r.get("name"));
+            map.put("rolevalue",r.get("value"));
             RetResult result = new RetResult<Map>().setCode(RetCode.SUCCESS).setData(map);
             return result;
         } catch (Exception e) {
