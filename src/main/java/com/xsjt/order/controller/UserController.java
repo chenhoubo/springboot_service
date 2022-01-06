@@ -38,8 +38,7 @@ public class UserController {
     @ApiOperation(value = "插入用户", notes="插入用户")
     public RetResult save(@RequestBody Map map) {
         log.info("save  start......:{}",map);
-        User user = JsonUtil.mapToEntity(map, User.class);
-        RetResult result = userService.saveUser(user);
+        RetResult result = userService.saveUser(map);
         log.info("save end......response:{}",result);
         return result;
     }
@@ -88,6 +87,15 @@ public class UserController {
         log.info("getInfo  start......:{}",user);
         RetResult<Map> info = userService.getInfo(user);
         log.info("getInfo end......response:{}",info);
+        return info;
+    }
+
+    @GetMapping("/resetPas")
+    @ApiOperation(value = "获取当前登录信息", notes="获取当前登录信息")
+    public RetResult resetPas(Long id) {
+        log.info("resetPas  start......:{}",id);
+        RetResult<String> info = userService.resetPas(id);
+        log.info("resetPas end......response:{}",info);
         return info;
     }
 }

@@ -20,7 +20,7 @@ import java.util.Map;
 public interface IUserService extends IService<User> {
 
 //    基本增删改查接口
-    RetResult<String> saveUser(User user) throws ServiceException;
+    RetResult<String> saveUser(Map map) throws ServiceException;
 
     RetResult<String> updateUser(User user) throws ServiceException;
 
@@ -35,6 +35,7 @@ public interface IUserService extends IService<User> {
 //    业务接口
     RetResult<String> login(Map<String,String> user) throws ServiceException;
     RetResult<Map> getInfo(User user) throws ServiceException;
+    RetResult<String> resetPas(Long id) throws ServiceException;
 
 
 }

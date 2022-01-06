@@ -17,6 +17,7 @@ import com.xsjt.core.ret.RetResult;
 import com.xsjt.core.util.Func;
 import com.xsjt.core.util.RedisUtil;
 import com.xsjt.core.util.TokenUtil;
+import com.xsjt.core.util.tool.AesUtil;
 import com.xsjt.core.util.tool.DateUtil;
 import com.xsjt.order.entity.Role;
 import com.xsjt.order.entity.User;
@@ -50,8 +51,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     @DataSource(DataSourceEnum.DB1)
-    public RetResult<String> saveUser(User user) throws ServiceException {
+    public RetResult<String> saveUser(Map map) throws ServiceException {
         try {
+            String username = (String)map.get("username");
+            List<User> userList = baseMapper.selectByUserName(username);
+            if(userList.size() > 0){
+                return new RetResult<String>().setCode(RetCode.FAIL).setMsg("用户已注册");
+            }
+            String key = AesUtil.genAesKey();
+            String str = Func.toStr(map.get("password"), "123456");
+            String password = AesUtil.encrypt(str, key);
+            map.put("ekey",key);
+            map.put("password",password);
+            User user = JsonUtil.mapToEntity(map, User.class);
             user.setCreateTime(DateUtil.getTime());
             user.setUpdateTime(DateUtil.getTime());
             if (baseMapper.insert(user) > 0) {
@@ -148,13 +160,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             String username = map.get("username");
             List<User> userList = baseMapper.selectByUserName(username);
             User user = userList.get(0);
-            JSONObject object = new JSONObject(user.getJson());
-            String password = object.getStr("password");
             if(Func.isEmpty(user)){
                 return new RetResult<String>().setCode(RetCode.UNAUTHZ);
-            }else if(user.getIsDeleted() == 1 || user.getStatus() == 1 ){
+            }
+            if(user.getIsDeleted() == 1 || user.getStatus() == 1 ){
                 return new RetResult<String>().setCode(RetCode.UNAUTHZ).setMsg("用户已被删除/禁用");
-            }else if(map.get("password").equals(password)){
+            }
+
+            JSONObject object = new JSONObject(user.getJson());
+            String ekey = object.getStr("ekey");
+            String webPassword = AesUtil.encrypt(map.get("password"), ekey);
+            String dbPassword = object.getStr("password");
+            if(webPassword.equals(dbPassword)){
                 String token = TokenUtil.getToken(user);
 //                访问次数加1
                 Long count = object.getLong("count") + 1;
@@ -184,6 +201,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             map.put("rolevalue",r.get("value"));
             RetResult result = new RetResult<Map>().setCode(RetCode.SUCCESS).setData(map);
             return result;
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public RetResult<String> resetPas(Long id) throws ServiceException {
+        try {
+            User baseUser = baseMapper.selectById(id);
+            if(Func.isEmpty(baseUser)){
+                return new RetResult<String>().setCode(RetCode.FAIL).setMsg("用户不存在");
+            }
+            Map map = JsonUtil.entityToMap(baseUser);
+            String key = AesUtil.genAesKey();
+            String password = AesUtil.encrypt("123456", key);
+            map.put("ekey",key);
+            map.put("password",password);
+            User user = JsonUtil.mapToEntity(map, User.class);
+            user.setUpdateTime(DateUtil.getTime());
+            if (baseMapper.updateById(user) > 0) {
+                return new RetResult<String>().setCode(RetCode.SUCCESS);
+            } else {
+                return new RetResult<String>().setCode(RetCode.FAIL);
+            }
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }

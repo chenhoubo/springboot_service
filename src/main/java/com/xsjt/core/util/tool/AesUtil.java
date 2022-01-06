@@ -1,5 +1,6 @@
 package com.xsjt.core.util.tool;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.util.Assert;
 
 import javax.crypto.Cipher;
@@ -22,51 +23,45 @@ public class AesUtil {
 		return StringUtil.random(32);
 	}
 
-	public static byte[] encrypt(byte[] content, String aesTextKey) {
-		return encrypt(content, aesTextKey.getBytes(Charsets.UTF_8));
-	}
-
-	public static byte[] encrypt(String content, String aesTextKey) {
-		return encrypt(content.getBytes(Charsets.UTF_8), aesTextKey.getBytes(Charsets.UTF_8));
-	}
-
-	public static byte[] encrypt(String content, java.nio.charset.Charset charset, String aesTextKey) {
-		return encrypt(content.getBytes(charset), aesTextKey.getBytes(Charsets.UTF_8));
-	}
-
-	public static byte[] decrypt(byte[] content, String aesTextKey) {
-		return decrypt(content, aesTextKey.getBytes(Charsets.UTF_8));
-	}
-
-	public static String decryptToStr(byte[] content, String aesTextKey) {
-		return new String(decrypt(content, aesTextKey.getBytes(Charsets.UTF_8)), Charsets.UTF_8);
-	}
-
-	public static String decryptToStr(byte[] content, String aesTextKey, java.nio.charset.Charset charset) {
-		return new String(decrypt(content, aesTextKey.getBytes(Charsets.UTF_8)), charset);
-	}
-
-	public static byte[] encrypt(byte[] content, byte[] aesKey) {
-		Assert.isTrue(aesKey.length == 32, "IllegalAesKey, aesKey's length must be 32");
+	public static String encrypt(String content, String aesKey) {
+//		Assert.isTrue(aesKey.getBytes(Charsets.UTF_8).length == 32, "IllegalAesKey, aesKey's length must be 32");
 		try {
-			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
-			IvParameterSpec iv = new IvParameterSpec(aesKey, 0, 16);
-			cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
-			return cipher.doFinal(Pkcs7Encoder.encode(content));
+//			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+//			SecretKeySpec keySpec = new SecretKeySpec(aesKey.getBytes(Charsets.UTF_8), "AES");
+//			IvParameterSpec iv = new IvParameterSpec(aesKey.getBytes(Charsets.UTF_8), 0, 16);
+//			cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
+//			byte[] bytes = cipher.doFinal(Pkcs7Encoder.encode(content.getBytes(Charsets.UTF_8)));
+//			return new Base64().encodeToString(bytes);
+
+			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");//"算法/模式/补码方式"NoPadding PkcsPadding
+			int blockSize = cipher.getBlockSize();
+			byte[] dataBytes = content.getBytes();
+			int plaintextLength = dataBytes.length;
+			if (plaintextLength % blockSize != 0) {
+				plaintextLength = plaintextLength + (blockSize - (plaintextLength % blockSize));
+			}
+			byte[] plaintext = new byte[plaintextLength];
+			System.arraycopy(dataBytes, 0, plaintext, 0, dataBytes.length);
+			SecretKeySpec keyspec = new SecretKeySpec(aesKey.getBytes(Charsets.UTF_8), "AES");
+			IvParameterSpec ivspec = new IvParameterSpec(aesKey.getBytes(Charsets.UTF_8), 0, 16);
+			cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
+			byte[] encrypted = cipher.doFinal(plaintext);
+			return new Base64().encodeToString(encrypted);
 		} catch (Exception e) {
 			throw Exceptions.unchecked(e);
 		}
 	}
 
-	public static byte[] decrypt(byte[] encrypted, byte[] aesKey) {
-		Assert.isTrue(aesKey.length == 32, "IllegalAesKey, aesKey's length must be 32");
+	public static String decrypt(String encrypted, String aesKey) {
+//		Assert.isTrue(aesKey.getBytes().length == 32, "IllegalAesKey, aesKey's length must be 32");
 		try {
+			byte[] encrypted1 = new Base64().decode(encrypted);
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
-			IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey, 0, 16));
+			SecretKeySpec keySpec = new SecretKeySpec(aesKey.getBytes(Charsets.UTF_8), "AES");
+			IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey.getBytes(Charsets.UTF_8), 0, 16));
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, iv);
-			return Pkcs7Encoder.decode(cipher.doFinal(encrypted));
+			byte[] original = cipher.doFinal(encrypted1);
+			return new String(original);
 		} catch (Exception e) {
 			throw Exceptions.unchecked(e);
 		}

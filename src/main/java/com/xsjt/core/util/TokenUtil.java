@@ -22,7 +22,7 @@ public class TokenUtil {
         token= JWT.create()
                 .withAudience(username)
                 .withIssuedAt(new Date(currentTime))// 签发时间
-                .withExpiresAt(new Date(currentTime + 30 * 1000 * 60))// 过期时间戳
+                .withExpiresAt(new Date(currentTime + 60 * 1000 * 60))// 过期时间戳
                 .sign(Algorithm.HMAC256(password));
         return token;
     }
