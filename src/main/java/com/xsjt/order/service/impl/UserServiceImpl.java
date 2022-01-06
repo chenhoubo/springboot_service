@@ -178,6 +178,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 object.remove("count");
                 object.putOnce("count",count);
                 user.setJson(JsonUtil.toJson(object));
+                user.setUpdateTime(DateUtil.getTime());
                 baseMapper.updateById(user);
                 return new RetResult<String>().setCode(RetCode.SUCCESS).setData(token);
             }else{
