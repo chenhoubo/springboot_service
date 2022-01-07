@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(value = "用户服务", description = "用户服务")
@@ -91,11 +92,30 @@ public class UserController {
     }
 
     @GetMapping("/resetPas")
-    @ApiOperation(value = "获取当前登录信息", notes="获取当前登录信息")
+    @ApiOperation(value = "重置用户密码", notes="重置用户密码")
     public RetResult resetPas(Long id) {
         log.info("resetPas  start......:{}",id);
         RetResult<String> info = userService.resetPas(id);
         log.info("resetPas end......response:{}",info);
         return info;
     }
+
+    @GetMapping("/getUserByRole")
+    @ApiOperation(value = "根据role获取用户", notes="根据role获取用户")
+    public RetResult getUserByRole(Long id) {
+        log.info("getUserByRole  start......:{}",id);
+        RetResult<List> info = userService.getUserByRole(id);
+        log.info("getUserByRole end......response:{}",info);
+        return info;
+    }
+
+    @GetMapping("/getMsgList")
+    @ApiOperation(value = "获取用户消息列表", notes="获取用户消息列表")
+    public RetResult getMsgList(User user) {
+        log.info("getMsgList  start......:{}",user);
+        RetResult<List> info = userService.getMsgList(user);
+        log.info("getMsgList end......response:{}",info);
+        return info;
+    }
+
 }

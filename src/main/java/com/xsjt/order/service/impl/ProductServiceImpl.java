@@ -96,6 +96,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         try {
             Page<Product> page = new PageFactory<Product>().defaultPage(query.getCurrent(), query.getSize(), null, null);
             Wrapper<Product> wrapper = new EntityWrapper<Product>().eq("is_deleted", 0);
+            if(Func.isNotEmpty(query.getStatus())){
+                wrapper.eq("status",Func.toInt(query.getStatus(), 0));
+            }
+            if(Func.isNotEmpty(query.getId())){
+                wrapper.eq("id",query.getId());
+            }
             Page selectPage = selectPage(page,wrapper);
             Page<Map> mapPage = JsonUtil.entitysToMaps(selectPage);
             RetResult<Page> msg = new RetResult<Page>().setCode(RetCode.SUCCESS).setData(mapPage);

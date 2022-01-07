@@ -23,4 +23,10 @@
     <select id="selectTotalVisits" resultType="java.lang.Long">
         SELECT sum(json->>'$.count') FROM user
     </select>
+
+    <select id="selectByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT * FROM user
+        WHERE json->>'$.role' = #{param1}
+        and status = 0 and is_deleted = 0
+    </select>
 </mapper>

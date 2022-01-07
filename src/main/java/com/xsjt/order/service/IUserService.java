@@ -7,6 +7,7 @@ import com.xsjt.core.page.Query;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +37,7 @@ public interface IUserService extends IService<User> {
     RetResult<String> login(Map<String,String> user) throws ServiceException;
     RetResult<Map> getInfo(User user) throws ServiceException;
     RetResult<String> resetPas(Long id) throws ServiceException;
-
+    RetResult<List> getUserByRole(Long id) throws ServiceException;
+    RetResult<List> getMsgList(User user) throws ServiceException;
 
 }

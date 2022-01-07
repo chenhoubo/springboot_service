@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.xsjt.order.entity.Product;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * @author chenhb27
@@ -13,4 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductMapper extends BaseMapper<Product> {
 
+    List<Product> selectByExamine(Long id);
 }

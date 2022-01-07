@@ -21,4 +21,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     Long selectTotalVisits();
 
+    List<User> selectByRoleId(Long id);
+
 }

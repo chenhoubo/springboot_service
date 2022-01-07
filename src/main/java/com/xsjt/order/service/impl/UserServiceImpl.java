@@ -19,17 +19,19 @@ import com.xsjt.core.util.RedisUtil;
 import com.xsjt.core.util.TokenUtil;
 import com.xsjt.core.util.tool.AesUtil;
 import com.xsjt.core.util.tool.DateUtil;
+import com.xsjt.order.entity.Product;
 import com.xsjt.order.entity.Role;
 import com.xsjt.order.entity.User;
+import com.xsjt.order.mapper.one.ProductMapper;
 import com.xsjt.order.mapper.one.UserMapper;
+import com.xsjt.order.service.IProductService;
 import com.xsjt.order.service.IRoleService;
 import com.xsjt.order.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -45,6 +47,7 @@ import java.util.Map;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     IRoleService roleService;
+    ProductMapper productMapper;
 
     private UserInfoProperties userInfoProperties;
     private RedisUtil redisUtil;
@@ -226,6 +229,38 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             } else {
                 return new RetResult<String>().setCode(RetCode.FAIL);
             }
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public RetResult<List> getUserByRole(Long id) throws ServiceException {
+        try {
+            List<User> users = baseMapper.selectByRoleId(id);
+            List<Map> maps = JsonUtil.entitysToMaps(users);
+            return new RetResult<List>().setCode(RetCode.SUCCESS).setData(maps);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public RetResult<List> getMsgList(User user) throws ServiceException {
+        try {
+            List<Product> productList = productMapper.selectByExamine(user.getId());
+            List<Map> maps = new ArrayList<>();
+            for (int i = 0; i < productList.size(); i++) {
+                HashMap<String, Object> map = new HashMap<>();
+                Product product = productList.get(i);
+                String content = "新增商品：" + product.getName() + ",需要你审核";
+                map.put("content",content);
+                map.put("id",product.getId());
+                map.put("time",DateUtil.formatDateTime(new Date(product.getUpdateTime())) );
+                maps.add(map);
+            }
+            RetResult result = new RetResult<List>().setCode(RetCode.SUCCESS).setData(maps);
+            return result;
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
