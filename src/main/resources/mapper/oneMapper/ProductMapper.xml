@@ -15,7 +15,7 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
-    <select id="selectByExamine" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByExamine" parameterType="String" resultMap="BaseResultMap">
         SELECT * FROM product
         WHERE json->>'$.examine' = #{param1}
         and json->>'$.type' = 0 and is_deleted = 0

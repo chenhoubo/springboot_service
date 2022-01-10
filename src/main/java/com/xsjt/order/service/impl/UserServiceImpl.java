@@ -248,14 +248,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public RetResult<List> getMsgList(User user) throws ServiceException {
         try {
-            List<Product> productList = productMapper.selectByExamine(user.getId());
+            List<Product> productList = productMapper.selectByExamine(String.valueOf(user.getId()));
             List<Map> maps = new ArrayList<>();
             for (int i = 0; i < productList.size(); i++) {
                 HashMap<String, Object> map = new HashMap<>();
                 Product product = productList.get(i);
-                String content = "新增商品：" + product.getName() + ",需要你审核";
-                map.put("content",content);
-                map.put("id",product.getId());
+                map.put("title",product.getName());
+                map.put("id",String.valueOf(product.getId()));
                 map.put("time",DateUtil.formatDateTime(new Date(product.getUpdateTime())) );
                 maps.add(map);
             }

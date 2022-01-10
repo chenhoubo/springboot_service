@@ -1,9 +1,12 @@
 package com.xsjt.order.service.impl;
 
 import com.xsjt.core.exception.ServiceException;
+import com.xsjt.core.jackson.JsonUtil;
 import com.xsjt.core.ret.RetCode;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.core.util.tool.DateUtil;
+import com.xsjt.order.entity.Product;
+import com.xsjt.order.mapper.one.ProductMapper;
 import com.xsjt.order.mapper.one.UserMapper;
 import com.xsjt.order.service.IHomeService;
 import com.xsjt.order.service.IUserService;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,6 +31,7 @@ import java.util.Map;
 public class HomeServiceImpl implements IHomeService {
 
     UserMapper userMapper;
+    ProductMapper productMapper;
 
     @Override
     public RetResult<Map> getCardsData() throws ServiceException {
@@ -60,31 +65,10 @@ public class HomeServiceImpl implements IHomeService {
     @Override
     public RetResult<Map> getTableList() throws ServiceException {
         try {
+            List<Product> productList = productMapper.selectList(null);
+            List<Map> mapList = JsonUtil.entitysToMaps(productList);
             HashMap<Object, Object> result = new HashMap<>();
-            ArrayList<Map> list = new ArrayList<>();
-            HashMap<Object, Object> map1 = new HashMap<>();
-            map1.put("id","52000019970429475X");
-            map1.put("52000019970429475X","O@X$s(rsr");
-            map1.put("price",8844);
-            map1.put("quantity",35);
-            map1.put("status",1);
-            list.add(map1);
-            HashMap<Object, Object> map2 = new HashMap<>(map1);
-            map2.put("status",2);
-            list.add(map2);
-            HashMap<Object, Object> map3 = new HashMap<>(map1);
-            map2.put("status",0);
-            list.add(map3);
-            HashMap<Object, Object> map4 = new HashMap<>(map1);
-            map4.put("status",2);
-            list.add(map4);
-            HashMap<Object, Object> map5 = new HashMap<>(map1);
-            map5.put("status",0);
-            list.add(map5);
-            HashMap<Object, Object> map6 = new HashMap<>(map1);
-            map6.put("status",1);
-            list.add(map6);
-            result.put("tableList",list);
+            result.put("tableList",mapList);
             return new RetResult<Map>().setCode(RetCode.SUCCESS).setData(result);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());

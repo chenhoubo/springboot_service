@@ -15,5 +15,5 @@ import java.util.List;
 @Repository
 public interface ProductMapper extends BaseMapper<Product> {
 
-    List<Product> selectByExamine(Long id);
+    List<Product> selectByExamine(String id);
 }
