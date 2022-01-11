@@ -1,5 +1,6 @@
 package com.xsjt.order.service.impl;
 
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -13,12 +14,15 @@ import com.xsjt.core.ret.RetResult;
 import com.xsjt.core.util.Func;
 import com.xsjt.core.util.tool.DateUtil;
 import com.xsjt.order.entity.Order;
+import com.xsjt.order.entity.Product;
 import com.xsjt.order.mapper.one.OrderMapper;
+import com.xsjt.order.mapper.one.ProductMapper;
 import com.xsjt.order.service.IOrderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -32,13 +36,36 @@ import java.util.Map;
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
+    ProductMapper productMapper;
+    OrderMapper orderMapper;
 
     @Override
     public RetResult<String> save(Order order) throws ServiceException {
         try {
+            Map<String, Object> json = JsonUtil.toMap(order.getJson());
+            ArrayList<Map> orderProducts = (ArrayList)json.get("orderProducts");
+            ArrayList<Product> updateP = new ArrayList<>();
+            for (int i = 0; i < orderProducts.size(); i++) {
+                Map map = orderProducts.get(i);
+                String id = (String)map.get("id");
+                Product product = productMapper.selectById(Long.parseLong(id));
+                if(Func.isNotEmpty(product)){
+                    product.setUpdateTime(DateUtil.getTime());
+                    JSONObject jsonObject = new JSONObject(product.getJson());
+                    Integer count = (Integer)jsonObject.get("count") - (Integer)map.get("count");
+                    jsonObject.set("count",count);
+                    product.setJson(jsonObject.toString());
+                    updateP.add(product);
+                }else{
+                    return new RetResult<String>().setCode(RetCode.FAIL).setData("产品："+map.get("name")+"失效/没找到");
+                }
+            }
+            for (int i = 0; i < updateP.size(); i++){
+                productMapper.updateById(updateP.get(i));
+            }
             order.setCreateTime(DateUtil.getTime());
             order.setUpdateTime(DateUtil.getTime());
-            if (baseMapper.insert(order) > 0) {
+            if ( orderMapper.insert(order) > 0) {
                 return new RetResult<String>().setCode(RetCode.SUCCESS);
             } else {
                 return new RetResult<String>().setCode(RetCode.FAIL);
@@ -96,6 +123,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         try {
             Page<Order> page = new PageFactory<Order>().defaultPage(query.getCurrent(), query.getSize(), null, null);
             Wrapper<Order> wrapper = new EntityWrapper<Order>().eq("is_deleted", 0);
+            if(Func.isNotEmpty(query.getStatus())){
+                wrapper.eq("status",Func.toInt(query.getStatus(), 0));
+            }
+            if(Func.isNotEmpty(query.getId())){
+                wrapper.eq("id",query.getId());
+            }
             Page selectPage = selectPage(page,wrapper);
             Page<Map> mapPage = JsonUtil.entitysToMaps(selectPage);
             RetResult<Page> msg = new RetResult<Page>().setCode(RetCode.SUCCESS).setData(mapPage);

@@ -16,4 +16,6 @@ import java.util.List;
 public interface ProductMapper extends BaseMapper<Product> {
 
     List<Product> selectByExamine(String id);
+
+    List<Product> selectByTypeAndStatus(Integer status, Integer type);
 }

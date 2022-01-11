@@ -21,4 +21,10 @@
         and json->>'$.type' = 0 and is_deleted = 0
     </select>
 
+    <select id="selectByTypeAndStatus" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT * FROM product
+        WHERE json->>'$.type' = #{param2}
+        and status = #{param1} and is_deleted = 0
+    </select>
+
 </mapper>

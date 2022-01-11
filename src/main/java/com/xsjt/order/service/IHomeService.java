@@ -16,7 +16,7 @@ public interface IHomeService {
 
     RetResult<Map> getLineData() throws ServiceException;
 
-    RetResult<Map> getTableList() throws ServiceException;
+    RetResult<Map> getTableList(Integer status, Integer type) throws ServiceException;
 
     RetResult<Map> getBarData() throws ServiceException;
 

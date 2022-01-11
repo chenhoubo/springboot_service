@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -40,9 +41,9 @@ public class HomeController {
     }
     @GetMapping("/getTableList")
     @ApiOperation(value = "获取表格信息", notes="获取表格信息")
-    public RetResult<Map> getTableList() {
-        log.info("getTableList  start......");
-        RetResult<Map> result = homeService.getTableList();
+    public RetResult<Map> getTableList(Integer status,Integer type) {
+        log.info("getTableList  start......status:{},type:{}",status,type);
+        RetResult<Map> result = homeService.getTableList(status,type);
         log.info("getTableList end......response:{}",result);
         return result;
     }

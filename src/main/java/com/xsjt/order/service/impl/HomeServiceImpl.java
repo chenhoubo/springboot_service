@@ -1,9 +1,11 @@
 package com.xsjt.order.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xsjt.core.exception.ServiceException;
 import com.xsjt.core.jackson.JsonUtil;
 import com.xsjt.core.ret.RetCode;
 import com.xsjt.core.ret.RetResult;
+import com.xsjt.core.util.Func;
 import com.xsjt.core.util.tool.DateUtil;
 import com.xsjt.order.entity.Product;
 import com.xsjt.order.mapper.one.ProductMapper;
@@ -14,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,9 +66,16 @@ public class HomeServiceImpl implements IHomeService {
     }
 
     @Override
-    public RetResult<Map> getTableList() throws ServiceException {
+    public RetResult<Map> getTableList(Integer status, Integer type) throws ServiceException {
         try {
-            List<Product> productList = productMapper.selectList(null);
+            List<Product> productList;
+            if(Func.isEmpty(status)){
+                EntityWrapper<Product> wrapper = new EntityWrapper<>();
+                wrapper.eq("is_deleted", 0);
+                productList = productMapper.selectList(wrapper);
+            }else{
+                productList = productMapper.selectByTypeAndStatus(status,type);
+            }
             List<Map> mapList = JsonUtil.entitysToMaps(productList);
             HashMap<Object, Object> result = new HashMap<>();
             result.put("tableList",mapList);
