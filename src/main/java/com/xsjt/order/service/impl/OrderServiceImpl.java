@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -45,6 +46,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             Map<String, Object> json = JsonUtil.toMap(order.getJson());
             ArrayList<Map> orderProducts = (ArrayList)json.get("orderProducts");
             ArrayList<Product> updateP = new ArrayList<>();
+            BigDecimal profit = new BigDecimal(0.00);
             for (int i = 0; i < orderProducts.size(); i++) {
                 Map map = orderProducts.get(i);
                 String id = (String)map.get("id");
@@ -56,6 +58,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                     jsonObject.set("count",count);
                     product.setJson(jsonObject.toString());
                     updateP.add(product);
+                    BigDecimal big1 = new BigDecimal(jsonObject.getDouble("profit"));
+                    BigDecimal big2 = new BigDecimal((Integer)map.get("count"));
+                    profit = profit.add(big1.multiply(big2));
                 }else{
                     return new RetResult<String>().setCode(RetCode.FAIL).setData("产品："+map.get("name")+"失效/没找到");
                 }
@@ -63,6 +68,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             for (int i = 0; i < updateP.size(); i++){
                 productMapper.updateById(updateP.get(i));
             }
+            json.put("profit",profit.doubleValue());
+            order.setJson(JsonUtil.toJson(json));
             order.setCreateTime(DateUtil.getTime());
             order.setUpdateTime(DateUtil.getTime());
             if ( orderMapper.insert(order) > 0) {

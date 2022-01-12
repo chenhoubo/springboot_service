@@ -15,5 +15,11 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
+    <select id="selectTotalOrder" resultType="java.lang.Long">
+        SELECT count(*) FROM order_pro
+    </select>
 
+    <select id="selectTotalProfit" resultType="java.lang.Double">
+        SELECT  cast(sum(json->>'$.profit') AS decimal(15,2)) FROM order_pro
+    </select>
 </mapper>

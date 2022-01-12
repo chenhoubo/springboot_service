@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@TableName("orderPro")
+@TableName("order_pro")
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("订单表")
 public class Order extends BaseEntity {

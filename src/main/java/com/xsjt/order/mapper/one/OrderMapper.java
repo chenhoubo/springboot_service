@@ -5,6 +5,7 @@ import com.xsjt.order.entity.Order;
 import org.springframework.stereotype.Repository;
 
 
+
 /**
  * @author chenhb27
  * @Date 2021/12/27 13:55
@@ -12,5 +13,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OrderMapper extends BaseMapper<Order> {
-
+    Long selectTotalOrder();
+    Double selectTotalProfit();
 }

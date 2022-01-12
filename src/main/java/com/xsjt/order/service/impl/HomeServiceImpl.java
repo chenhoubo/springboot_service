@@ -8,6 +8,7 @@ import com.xsjt.core.ret.RetResult;
 import com.xsjt.core.util.Func;
 import com.xsjt.core.util.tool.DateUtil;
 import com.xsjt.order.entity.Product;
+import com.xsjt.order.mapper.one.OrderMapper;
 import com.xsjt.order.mapper.one.ProductMapper;
 import com.xsjt.order.mapper.one.UserMapper;
 import com.xsjt.order.service.IHomeService;
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,16 +37,19 @@ public class HomeServiceImpl implements IHomeService {
 
     UserMapper userMapper;
     ProductMapper productMapper;
+    OrderMapper orderMapper;
 
     @Override
     public RetResult<Map> getCardsData() throws ServiceException {
         try {
             HashMap<Object, Object> hashMap = new HashMap<>();
             Long vistors = userMapper.selectTotalVisits();
+            Long order = orderMapper.selectTotalOrder();
+            Double profit = orderMapper.selectTotalProfit();
             hashMap.put("vistors",vistors);
-            hashMap.put("message",767);
-            hashMap.put("order",79757);
-            hashMap.put("profit",51904);
+            hashMap.put("message",0);
+            hashMap.put("order",order);
+            hashMap.put("profit",profit);
             return new RetResult<Map>().setCode(RetCode.SUCCESS).setData(hashMap);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
