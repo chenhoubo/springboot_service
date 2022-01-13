@@ -592,4 +592,13 @@ public class DateUtil {
 		return format(new Date(), "yyyyMMdd");
 	}
 
+	/**
+	 * 获取当前时间戳
+	 *
+	 * @return 时间
+	 */
+	public static long getTime() {
+		return System.currentTimeMillis();
+	}
+
 }

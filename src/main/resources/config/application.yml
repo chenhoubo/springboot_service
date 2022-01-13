@@ -4,4 +4,4 @@ server:
     context-path: /harrissService
 spring:
   profiles:
-    active: prod
+    active: dev

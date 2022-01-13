@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.xsjt.core.support.interceptor.AuthenticationInterceptor;
+import com.xsjt.core.support.interceptor.UserArgumentResolver;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -35,6 +37,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 public class WebConfig extends WebMvcConfigurationSupport {
 
     private AuthenticationInterceptor authenticationInterceptor;
+    private UserArgumentResolver userArgumentResolver;
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -92,20 +95,17 @@ public class WebConfig extends WebMvcConfigurationSupport {
         super.addResourceHandlers(registry);
     }
 
-//    @Override
-//    protected void addInterceptors(InterceptorRegistry registry) {
-//        List<String> excludePath = new ArrayList<>();
-//        excludePath.add("/applet/login");
-//        excludePath.add("/applet/bindUser");
-//        excludePath.add("/applet/send");
-//        excludePath.add("/applet/changeType");
-//        excludePath.add("/applet/getType");
-//        excludePath.add("/qiwei/**");
-//
-//        registry.addInterceptor(authenticationInterceptor)
-//                .addPathPatterns("/**")// 拦截的请求路径
-//                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/configuration/**")//swagger放行
-//                .excludePathPatterns(excludePath);//排除的请求路径
-//    }
-
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        List<String> excludePath = new ArrayList<>();
+        excludePath.add("/user/login");
+        registry.addInterceptor(authenticationInterceptor)
+                .addPathPatterns("/**")// 拦截的请求路径
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/configuration/**")//swagger放行
+                .excludePathPatterns(excludePath);//排除的请求路径
+    }
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(userArgumentResolver);
+    }
 }

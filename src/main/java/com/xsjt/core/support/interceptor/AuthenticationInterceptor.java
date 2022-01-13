@@ -31,7 +31,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         // 执行认证
         if (token == null) {
-            throw new ServiceException(RetCode.UNAUTHEN.getMsg());
+            throw new ServiceException(RetCode.UNAUTHEN);
         }
         // 获取 token 中的 unionId
         String username;

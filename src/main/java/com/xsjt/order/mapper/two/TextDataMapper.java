@@ -1,8 +1,9 @@
-package com.xsjt.order.mapper.db1;
+package com.xsjt.order.mapper.two;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.xsjt.order.entity.User;
 import org.springframework.stereotype.Repository;
+
 
 /**
  * <p>
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Repository;
  * @since 2021-09-07
  */
 @Repository
-public interface UserMapper extends BaseMapper<User> {
+public interface TextDataMapper extends BaseMapper<User> {
 
-    User selectByUserName(String username);
 }

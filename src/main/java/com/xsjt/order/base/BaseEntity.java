@@ -36,7 +36,7 @@ public class BaseEntity implements Serializable {
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	@ApiModelProperty(value = "创建人")
-	private String createBy;
+	private String createBy = "default";
 
 	/**
 	 * 创建时间
@@ -49,7 +49,7 @@ public class BaseEntity implements Serializable {
 	 */
 	@JsonSerialize(using = ToStringSerializer.class)
 	@ApiModelProperty(value = "更新人")
-	private String updateBy;
+	private String updateBy = "default";
 
 	/**
 	 * 更新时间

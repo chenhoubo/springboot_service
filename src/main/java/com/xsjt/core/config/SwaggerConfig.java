@@ -11,7 +11,6 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -44,7 +43,7 @@ public class SwaggerConfig {
         // =========添加head参数end===================
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-                .groupName("Itwork-Api")
+                .groupName("Springboot-Api")
                 .select()
                 //控制层所在的包
                 .apis(RequestHandlerSelectors.basePackage("com.xsjt.order.controller"))
@@ -57,8 +56,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("ItWorks-API")
-                .description("ItWorks 接口描述")
+                .title("Springboot-API")
+                .description("Springboot 接口描述")
 //                .termsOfServiceUrl("https://blog.csdn.net/qq_41107680")
 //                .contact(new Contact("Harriss", "https://blog.csdn.net/qq_41107680", "2291544704@qq.com"))
                 .version("1.0")

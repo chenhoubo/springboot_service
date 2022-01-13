@@ -22,18 +22,18 @@ package com.xsjt.core.redis;
  */
 public interface CacheNames {
 
-	String NOTICE_ONE = "itworks:notice:one:";
+	String NOTICE_ONE = "springboot:notice:one:";
 
-	String DICT_VALUE = "itworks:dict:value";
-	String DICT_LIST = "itworks:dict:list";
+	String DICT_VALUE = "springboot:dict:value";
+	String DICT_LIST = "springboot:dict:list";
 
-	String CAPTCHA_KEY = "itworks:user:auth:value";
+	String CAPTCHA_KEY = "springboot:user:auth:value";
 
-	String OFFICIAL_ACCESS_TOKEN_KEY = "itworks:official:accesstoken:value";
+	String OFFICIAL_ACCESS_TOKEN_KEY = "springboot:official:accesstoken:value";
 
-	String APPLET_ACCESS_TOKEN_KEY = "itworks:applet:accesstoken:value";
+	String APPLET_ACCESS_TOKEN_KEY = "springboot:applet:accesstoken:value";
 
-	String KEY_ACCESS_TOKEN="itworks:qiwei:accesstoken:value";
+	String KEY_ACCESS_TOKEN="springboot:qiwei:accesstoken:value";
 
 
 	/** 缓存更新频率，单位秒 */

@@ -2,7 +2,7 @@ package com.xsjt.core.distributed.enums;
 
 public enum DataSourceEnum {
 
-    DB1("db1"),DB2("db2");
+    DB1("one"),DB2("two");
 
     private String value;
 
