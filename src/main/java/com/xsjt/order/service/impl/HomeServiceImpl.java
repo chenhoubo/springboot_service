@@ -10,6 +10,7 @@ import com.xsjt.core.util.tool.DateUtil;
 import com.xsjt.order.entity.Product;
 import com.xsjt.order.mapper.one.OrderMapper;
 import com.xsjt.order.mapper.one.ProductMapper;
+import com.xsjt.order.mapper.one.SpeakMapper;
 import com.xsjt.order.mapper.one.UserMapper;
 import com.xsjt.order.service.IHomeService;
 import com.xsjt.order.service.IUserService;
@@ -38,6 +39,7 @@ public class HomeServiceImpl implements IHomeService {
     UserMapper userMapper;
     ProductMapper productMapper;
     OrderMapper orderMapper;
+    SpeakMapper speakMapper;
 
     @Override
     public RetResult<Map> getCardsData() throws ServiceException {
@@ -46,8 +48,9 @@ public class HomeServiceImpl implements IHomeService {
             Long vistors = userMapper.selectTotalVisits();
             Long order = orderMapper.selectTotalOrder();
             Double profit = orderMapper.selectTotalProfit();
+            Long message = speakMapper.selectTotalSpeaks();
             hashMap.put("vistors",vistors);
-            hashMap.put("message",0);
+            hashMap.put("message",message);
             hashMap.put("order",order);
             hashMap.put("profit",profit);
             return new RetResult<Map>().setCode(RetCode.SUCCESS).setData(hashMap);

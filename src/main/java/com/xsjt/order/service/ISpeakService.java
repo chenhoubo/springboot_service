@@ -7,6 +7,7 @@ import com.xsjt.core.page.Query;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.Speak;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,4 +28,5 @@ public interface ISpeakService extends IService<Speak> {
 
     RetResult<Page> page(Query query) throws ServiceException;
 
+    RetResult<List> all() throws ServiceException;
 }

@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(value = "评论", description = "评论")
@@ -51,6 +52,15 @@ public class SpeakController {
         log.info("page  start......:{}",query);
         RetResult<Page> result = speakService.page(query);
         log.info("page end......response:{}",result);
+        return result;
+    }
+
+    @GetMapping("/all")
+    @ApiOperation(value = "分页获取", notes="分页获取")
+    public RetResult<List> all() {
+        log.info("all  start......");
+        RetResult<List> result = speakService.all();
+        log.info("all end......response:{}",result);
         return result;
     }
 

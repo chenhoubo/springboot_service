@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -96,9 +97,29 @@ public class InfoServiceImpl extends ServiceImpl<InfoMapper, Info> implements II
         try {
             Page<Info> page = new PageFactory<Info>().defaultPage(query.getCurrent(), query.getSize(), null, null);
             Wrapper<Info> wrapper = new EntityWrapper<Info>().eq("is_deleted", 0);
+            if(Func.isNotEmpty(query.getStatus())){
+                wrapper.eq("status",Func.toInt(query.getStatus(), 0));
+            }
+            if(Func.isNotEmpty(query.getId())){
+                wrapper.eq("id",query.getId());
+            }
             Page selectPage = selectPage(page,wrapper);
             Page<Map> mapPage = JsonUtil.entitysToMaps(selectPage);
             RetResult<Page> msg = new RetResult<Page>().setCode(RetCode.SUCCESS).setData(mapPage);
+            return msg;
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public RetResult<List> available() throws ServiceException {
+        try {
+            Wrapper<Info> wrapper = new EntityWrapper<Info>().eq("is_deleted", 0);
+            wrapper.eq("status",0);
+            List<Info> list = selectList(wrapper);
+            List<Map> maps = JsonUtil.entitysToMaps(list);
+            RetResult<List> msg = new RetResult<List>().setCode(RetCode.SUCCESS).setData(maps);
             return msg;
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());

@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -99,6 +100,19 @@ public class SpeakServiceImpl extends ServiceImpl<SpeakMapper, Speak> implements
             Page selectPage = selectPage(page,wrapper);
             Page<Map> mapPage = JsonUtil.entitysToMaps(selectPage);
             return new RetResult<Page>().setCode(RetCode.SUCCESS).setData(mapPage);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public RetResult<List> all() throws ServiceException {
+        try {
+            Wrapper<Speak> wrapper = new EntityWrapper<Speak>().eq("is_deleted", 0);
+            wrapper.orderBy("create_time",false);
+            List<Speak> list = selectList(wrapper);
+            List<Map> maps = JsonUtil.entitysToMaps(list);
+            return new RetResult<List>().setCode(RetCode.SUCCESS).setData(maps);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }

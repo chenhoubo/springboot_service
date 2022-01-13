@@ -15,5 +15,8 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
+    <select id="selectTotalSpeaks" resultType="java.lang.Long">
+        SELECT count(*) FROM speak
+    </select>
 
 </mapper>

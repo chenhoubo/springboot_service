@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(value = "项目信息", description = "项目信息")
@@ -61,6 +62,16 @@ public class InfoController {
         log.info("getUser  start......:{}",id);
         RetResult<Map> result = infoService.select(id);
         log.info("getUser end......response:{}",result);
+        return result;
+    }
+
+    @GetMapping("/available")
+    @ResponseBody
+    @ApiOperation(value = "获取", notes="获取")
+    public RetResult<List> available() {
+        log.info("available  start......");
+        RetResult<List> result = infoService.available();
+        log.info("available end......response:{}",result);
         return result;
     }
 

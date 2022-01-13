@@ -7,6 +7,7 @@ import com.xsjt.core.page.Query;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.Info;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,4 +28,5 @@ public interface IInfoService extends IService<Info> {
 
     RetResult<Page> page(Query query) throws ServiceException;
 
+    RetResult<List> available() throws ServiceException;
 }

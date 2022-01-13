@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SpeakMapper extends BaseMapper<Speak> {
 
+    Long selectTotalSpeaks();
+
 }
