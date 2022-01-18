@@ -2,7 +2,6 @@ package com.xsjt.order.controller;
 
 import com.xsjt.core.jackson.JsonUtil;
 import com.xsjt.core.page.Query;
-import com.xsjt.core.ret.RetCode;
 import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.User;
 import com.xsjt.order.service.IUserService;
