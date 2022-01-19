@@ -7,6 +7,7 @@ import com.xsjt.core.ret.RetResult;
 import com.xsjt.order.entity.SysFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -28,8 +29,8 @@ public interface IFileService {
     RetResult<Page> pageSysFile(Query query) throws ServiceException;
 
 //    业务逻辑接口
-    RetResult<String> upload(MultipartFile file, String folder) throws ServiceException;
-
+    RetResult<String> upload(MultipartFile file, String folder, String desc) throws ServiceException;
+    void download(String folder, String filename, HttpServletResponse response) throws ServiceException;
     RetResult<String> deleteFile(String folder,String filename) throws ServiceException;
 
 }

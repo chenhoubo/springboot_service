@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Api(value = "文件服务", description = "文件服务")
@@ -25,9 +26,9 @@ public class FileController {
 
     @RequestMapping("/upload")
     @ApiOperation(value = "上传文件", notes="上传文件")
-    public RetResult upload(@RequestParam("uploadFile") MultipartFile uploadFile,String folder) {
-        log.info("upload  start......folder:{}",folder);
-        RetResult<String> upload = iFileService.upload(uploadFile,folder);
+    public RetResult upload(@RequestParam("uploadFile") MultipartFile uploadFile,String folder, String desc) {
+        log.info("upload  start......folder:{},desc:{}",folder,desc);
+        RetResult<String> upload = iFileService.upload(uploadFile,folder,desc);
         log.info("upload end......response:{}",upload);
         return upload;
     }
@@ -39,6 +40,14 @@ public class FileController {
         RetResult result = iFileService.deleteFile(folder,filename);
         log.info("remove end......response:{}",result);
         return result;
+    }
+
+    @GetMapping("/download")
+    @ApiOperation(value = "下载文件", notes="下载文件")
+    public void download(String folder,String filename, HttpServletResponse response) {
+        log.info("download  start......folder:{},filename:{}",folder,filename);
+        iFileService.download(folder,filename,response);
+        log.info("download end......");
     }
 
     @PostMapping("/save")

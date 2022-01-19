@@ -22,9 +22,10 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -119,7 +120,7 @@ public class FileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impleme
     }
 
     @Override
-    public RetResult<String> upload(MultipartFile file, String folder) throws ServiceException {
+    public RetResult<String> upload(MultipartFile file, String folder,String desc) throws ServiceException {
 //        获取当前系统的文件路径
         String filePath = System.getProperty("user.dir") + File.separator +"fileData" + File.separator + folder;
         FileUtil.createDir(filePath);
@@ -138,6 +139,7 @@ public class FileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impleme
                 map.put("filePath",uploadPath);
                 map.put("fileFolder",folder);
                 map.put("name",filename);
+                map.put("desc",desc);
                 long size = file.getSize() / 1024; //kb
                 map.put("size",size+"kb");
                 String suffix = filename.substring(filename.lastIndexOf(".") + 1);
@@ -163,6 +165,30 @@ public class FileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impleme
             }
         }
         return new RetResult<String>().setCode(RetCode.SUCCESS).setData("文件上传完成！");
+    }
+
+    @Override
+    public void download(String folder, String filename, HttpServletResponse response) throws ServiceException {
+        String filePath = System.getProperty("user.dir") + File.separator +"fileData" + File.separator + folder + File.separator + filename;
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new ServiceException("文件不存在");
+        }
+        response.setContentType("application/octet-stream;");
+        response.addHeader("Content-Disposition", "attachment;fileName=" + filename);
+        response.addHeader("Content-Length", "" + file.length());
+        byte[] buffer = new byte[1024];
+        try (FileInputStream fis = new FileInputStream(file);
+             BufferedInputStream bis = new BufferedInputStream(fis)) {
+            OutputStream os = response.getOutputStream();
+            int i = bis.read(buffer);
+            while (i != -1) {
+                os.write(buffer, 0, i);
+                i = bis.read(buffer);
+            }
+        } catch (IOException e) {
+            throw new ServiceException("文件下载异常");
+        }
     }
 
     @Override
