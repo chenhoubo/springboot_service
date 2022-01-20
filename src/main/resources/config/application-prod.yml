@@ -2,6 +2,12 @@ spring:
   aop:
     proxy-target-class: true
     auto: true
+  servlet:
+    multipart:
+      # 最大支持文件大小
+      max-file-size: 50MB
+      # 最大支持请求大小
+      max-request-size: 50MB
   datasource:
     druid:
       one:
@@ -55,6 +61,8 @@ logging:
   config: classpath:logback-service.xml
   path: /data/harrissService-log
 
+
+#开发信息
 detail:
   info:
     name: harriss
