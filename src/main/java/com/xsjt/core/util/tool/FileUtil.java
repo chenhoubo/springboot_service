@@ -389,4 +389,74 @@ public class FileUtil extends org.springframework.util.FileCopyUtils {
 			throw new ServiceException("创建目录" + path + "失败！");
 		}
 	}
+
+	/**
+	 * 删除空目录
+	 * @param dir 将要删除的目录路径
+	 */
+	public static void doDeleteEmptyDir(String dir) {
+		boolean success = (new File(dir)).delete();
+		if (success) {
+			System.out.println("Successfully deleted empty directory: " + dir);
+		} else {
+			System.out.println("Failed to delete empty directory: " + dir);
+		}
+	}
+
+	/**
+	 * 递归删除目录下的所有文件及子目录下所有文件
+	 * @param dir 将要删除的文件目录
+	 * @return boolean Returns "true" if all deletions were successful.
+	 * 		   If a deletion fails, the method stops attempting to
+	 * 	       delete and returns "false".
+	 */
+	public static boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			//递归删除目录中的子目录下
+			for (int i=0; i<children.length; i++) {
+				boolean success = deleteDir(new File(dir, children[i]));
+				if (!success) {
+					return false;
+				}
+			}
+		}
+		// 目录此时为空，可以删除
+		return dir.delete();
+	}
+
+	/**
+	 * 删除单个文件
+	 * @param   sPath    被删除文件的文件名
+	 * @return 单个文件删除成功返回true，否则返回false
+	 */
+	public boolean deleteFile(String sPath) {
+		boolean flag = false;
+		File file = new File(sPath);
+		// 路径为文件且不为空则进行删除
+		if (file.isFile() && file.exists()) {
+			file.delete();
+			flag = true;
+		}
+		return flag;
+	}
+	/**
+	 *测试
+	 */
+	public static void main(String[] args) {
+		String filePath = System.getProperty("user.dir") + File.separator +"fileData" + File.separator + "sss";
+		String test = System.getProperty("user.dir") + File.separator +"fileData" + File.separator + "test";
+		String file = System.getProperty("user.dir") + File.separator +"fileData" + File.separator + "test" + File.separator + "陈厚伯.pdf";
+//		删除一个空目录
+		doDeleteEmptyDir(filePath);
+//		删除一个带文件的目录
+		boolean success = deleteDir(new File(test));
+//		删除一个文件
+		boolean b = deleteFile(file);
+		if (b) {
+			System.out.println("Successfully deleted populated directory: " + test);
+		} else {
+			System.out.println("Failed to delete populated directory: " + test);
+		}
+	}
 }

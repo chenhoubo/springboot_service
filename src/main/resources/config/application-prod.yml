@@ -2,13 +2,20 @@ spring:
   aop:
     proxy-target-class: true
     auto: true
+  servlet:
+    multipart:
+      # 最大支持文件大小
+      max-file-size: 50MB
+      # 最大支持请求大小
+      max-request-size: 50MB
   datasource:
     druid:
       one:
-        url: jdbc:mysql://localhost:3306/starter?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
+        url: jdbc:mysql://**.**.**.**:**/**?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
-        username: root
-        password: root
+        username: **
+        #        password: **
+        password: **
       two:
         url: jdbc:mysql://localhost:3306/business?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
         driver-class-name: com.mysql.jdbc.Driver
@@ -17,9 +24,9 @@ spring:
   mvc:
     #访问一个不存在的页面时是否抛出异常,此处抛出异常方便捕捉后返回前台
     throw-exception-if-no-handler-found: false
-  resources:
-    add-mappings: false
-    static-locations: classpath:static/
+  #  resources:
+  #    add-mappings: false
+  #    static-locations: classpath:static/
   redis:
     host: 127.0.0.1
     port: 6379
@@ -29,14 +36,6 @@ spring:
 
 # redis配置
 redis:
-  # 集群
-  #  cluster:
-  #    nodes:
-  #      cluster:
-  #        max-redirects: 1
-  #        nodes: 192.168.*.*:6379
-  #        password:
-  # 单点
   pool:
     maxIdle: 1 #最大空闲数
     maxWaitMillis: -1
@@ -55,6 +54,8 @@ logging:
   config: classpath:logback-service.xml
   path: /data/harrissService-log
 
+
+#开发信息
 detail:
   info:
     name: harriss
@@ -62,5 +63,3 @@ detail:
     gender: male
     address: Hunan, China
     email: 2291544704@qq.com
-  url:
-    login: http://****.com/service/login
