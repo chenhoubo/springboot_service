@@ -44,7 +44,7 @@ public class UserController {
     }
     @PostMapping("/update")
     @ResponseBody
-    @ApiOperation(value = "更新用户", notes="分页获取用户")
+    @ApiOperation(value = "更新用户", notes="更新用户")
     public RetResult update(@RequestBody Map map) {
         log.info("update  start......:{}",map);
         User user = JsonUtil.mapToEntity(map, User.class);

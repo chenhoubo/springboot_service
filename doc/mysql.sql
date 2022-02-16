@@ -188,3 +188,31 @@ CREATE TABLE `profit_2021` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='年收益汇总表';
 
+CREATE TABLE starter.work_type (
+   id bigint(20) auto_increment NOT NULL,
+   name varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   status int(11) DEFAULT 0 NOT NULL,
+   is_deleted int(11) DEFAULT 0 NOT NULL,
+   json json NULL,
+   create_by varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   update_by varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   create_time bigint(20) NULL,
+   update_time bigint(20) NULL,
+   end_time bigint(20) NULL,
+   CONSTRAINT `PRIMARY` PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='工单类型';
+
+CREATE TABLE starter.work_pool (
+   id bigint(20) auto_increment NOT NULL,
+   name varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   status int(11) DEFAULT 0 NOT NULL,
+   is_deleted int(11) DEFAULT 0 NOT NULL,
+   json json NULL,
+   create_by varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   update_by varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   create_time bigint(20) NULL,
+   update_time bigint(20) NULL,
+   end_time bigint(20) NULL,
+   CONSTRAINT `PRIMARY` PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='工单池';
+
